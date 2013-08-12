@@ -1,0 +1,24 @@
+<project name="distro.build" default="build" basedir="./" xmlns:antcontrib="antlib:net.sf.antcontrib">
+
+	<loadproperties srcfile="build.properties"/>
+	<import file="${cfdistro.build.file}"/>
+
+	<target name="build" depends="cfdistro.build">
+	</target>
+
+	<target name="build.mvn.deploy" depends="project.update">
+	    <property name="mvn.repo.dest" value="local" />
+	    <property name="mvn.repo.dest" value="remote" />
+	    <property name="mvn.repo.id" value="mvn.repo.${mvn.repo.dest}" />
+	    <property name="maven.repo.local" location="${cfdistro.basedir}/artifacts" />
+		<mvn-repo id="mvn.repo.local" url="file://${maven.repo.local}/" />
+	   	<property name="mvn.type" value="release" />
+
+		<zip destfile="${dist.dir}/cfselenium.zip" update="false">
+                	<fileset dir="${src.dir}/cfselenium" excludes="test/**"/>
+                </zip>
+                <pom-and-deploy pomid="cfselenium.pom" packaging="zip" artifact="${dist.dir}/cfselenium.zip"
+                 groupId="cfml.cfselenium" artifactId="cfselenium" version="2.28.0" name="cfselenium"/>
+	</target>	
+	
+</project>
